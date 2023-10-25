@@ -300,7 +300,7 @@ botly.on("postback", async (senderId, message, postback) => {
         const words = text.split(' ');
         
         for (const word of words) {
-          if ((currentPart + ' ' + word).length <= 1600) {
+          if ((currentPart + ' ' + word).length <= 2000) {
             currentPart += (currentPart ? ' ' : '') + word;
           } else {
             parts.push(currentPart);
