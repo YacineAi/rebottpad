@@ -242,7 +242,30 @@ botly.on("postback", async (senderId, message, postback) => {
               });
             });
       } else if (postback == "Settings") {
-        //
+        const pree = (term) => {
+          if (term == "16") {
+            return "العربية 🇩🇿";
+          } else if (term == "1") {
+            return "الانجليزية 🇺🇸";
+          } else if (term == "messenger") {
+            return "ماسنجر 💬";
+          } else if (term == "lite") {
+            return "فيسبوك لايت 🗨️";
+          } else if (term == ".") {
+            return ".";
+          }
+        };
+        
+        const user = await userDb(senderId);
+        botly.sendText({ // pree(user[0].mature)
+          id: senderId,
+          text: `مرحبا بك 💜 إليك إعداداتك 🪪 :\nإسمك 👤 : ${user[0].name}\nلغة الروايات 🌐 : ${pree(user[0].lang)}\nالمنصة 📱 : ${pree(user[0].os)}`,
+          quick_replies: [
+            botly.createQuickReply("تغيير الاسم 👤", "namechange"),
+            botly.createQuickReply("تغيير اللغة 🌐", "langchange"),
+            botly.createQuickReply("تغيير المنصة 📱", "oschange")
+          ],
+        });
       } else if (postback == "messenger") {
         //
       } else if (postback == "mature0") {
