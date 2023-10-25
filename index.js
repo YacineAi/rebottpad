@@ -224,7 +224,7 @@ botly.on("postback", async (senderId, message, postback) => {
   if (senderId == "6114274025328348") {
     if (message.postback) {
       if (postback == "GET_STARTED") {
-        await createUser({uid: senderId, os: null, pad: null, lang: null, mature: null, name: null})
+        await createUser({uid: senderId, os: null, pad: null, lang: null, name: null})
             .then((data, error) => {
               botly.sendText({
                 id: senderId,
@@ -328,7 +328,7 @@ botly.on("postback", async (senderId, message, postback) => {
             });
       } else if (postback == "s-16" || postback == "s-1") {
         var shape = postback.slice(2);
-        await updateUser(senderId, {mature: shape})
+        await updateUser(senderId, {lang: shape})
             .then((data, error) => {
               if (error) { botly.sendText({id: senderId, text: "حدث خطأ"}); }
               botly.sendText({
