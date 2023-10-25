@@ -209,9 +209,9 @@ botly.on("message", async (senderId, message) => {
 });
 
 
-async function getStory(url) {
+async function getStory(id) {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(`https://www.wattpad.com/apiv2/?m=storytext&id=${id}`);
     const html = response.data;
 
     const $ = cheerio.load(html);
@@ -290,7 +290,7 @@ botly.on("postback", async (senderId, message, postback) => {
           ],
         });
       } else if (message.postback.title == "بدأ قراءة الرواية 📖") {
-        const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${postback}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`/*, { headers : headers2}*/);
+        const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${postback}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
   
         var text = getStory(read.data.parts[0].id)
   
