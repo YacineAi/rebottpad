@@ -142,7 +142,7 @@ botly.on("message", async (senderId, message) => {
         } else {
           if (user[0].os == "messenger") {
             const search = await axios.get(`https://api.wattpad.com/v4/search/stories?query=${encodeURIComponent(message.message.text)}&mature=1&free=1&paid=1&limit=10&fields=stories(id%2Ctitle%2CvoteCount%2CreadCount%2CnumParts%2Cuser%2Cmature%2Ccompleted%2Crating%2Ccover%2Cpromoted%2CisPaywalled%2CpaidModel)&language=${user[0].lang}`, { headers: headers });
-
+            
             const list = [];
             search.data.stories.forEach((x) => {
               const contents = {
@@ -194,7 +194,13 @@ botly.on("message", async (senderId, message) => {
       botly.sendText({ id: senderId, text: "attach"});
   }
   } else {
-    botly.sendText({ id: senderId, text: "يجري إعتماد التحسينات الان... يرجى الصبر"});
+    botly.sendText({
+      id: senderId,
+      text: "يجري إعتماد التحسينات الان... يرجى الصبر",
+      quick_replies: [
+        botly.createQuickReply("موافق ⬅️", "skip")
+      ],
+    });
   }
 });
 
@@ -402,7 +408,13 @@ botly.on("postback", async (senderId, message, postback) => {
       }
     }
   } else {
-    botly.sendText({ id: senderId, text: "يجري إعتماد التحسينات الان... يرجى الصبر"});
+    botly.sendText({
+      id: senderId,
+      text: "يجري إعتماد التحسينات الان... يرجى الصبر",
+      quick_replies: [
+        botly.createQuickReply("موافق ⬅️", "skip")
+      ],
+    });
   }
 });
 
