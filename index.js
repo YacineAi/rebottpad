@@ -391,8 +391,12 @@ botly.on("postback", async (senderId, message, postback) => {
               if (error) { botly.sendText({id: senderId, text: "حدث خطأ"}); }
               botly.sendText({id: senderId, text: "تم الحفظ ✅ شكرا لك 🥰"});
             });
-      } else if (message.message.text == "4") {
-        //
+      } else if (message.message.text == "قبول ✅") {
+        await updateUser(senderId, {name: postback})
+            .then((data, error) => {
+              if (error) { botly.sendText({id: senderId, text: "حدث خطأ"}); }
+              botly.sendText({id: senderId, text: "تم الحفظ ✅ شكرا لك 🥰"});
+            });
       } else if (message.message.text == "5") {
         //
       }
