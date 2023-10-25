@@ -407,16 +407,14 @@ botly.on("postback", async (senderId, message, postback) => {
             botly.createQuickReply("تخطي ⬅️", "skip")
           ],
         });
-      } else if (postback == "--") {
-  
-      } else if (message.message.text == "ماسنجر 💬" || message.message.text == "فيسبوك لايت 🗨️") {
-        await updateUser(senderId, {os: postback})
+      } else if (postback == "16" || postback == "1") {
+        await updateUser(senderId, {lang: postback})
             .then((data, error) => {
               if (error) { botly.sendText({id: senderId, text: "حدث خطأ"}); }
               botly.sendText({id: senderId, text: "تم الحفظ ✅ شكرا لك 🥰"});
             });
-      } else if (message.message.text == "العربية 🇩🇿" || message.message.text == "الانجليزية 🇺🇸") {
-        await updateUser(senderId, {lang: postback})
+      } else if (message.message.text == "ماسنجر 💬" || message.message.text == "فيسبوك لايت 🗨️") {
+        await updateUser(senderId, {os: postback})
             .then((data, error) => {
               if (error) { botly.sendText({id: senderId, text: "حدث خطأ"}); }
               botly.sendText({id: senderId, text: "تم الحفظ ✅ شكرا لك 🥰"});
