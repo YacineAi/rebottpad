@@ -16,6 +16,7 @@ const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SB_URL, process.env.SB_KEY, { auth: { persistSession: false} });
 
 const headers = {
+  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
   "Cookie":"token=369655189:2:1697695251:xbyyOCRI-aOklMbmBBxWVcmOY2zHjdfsNInsgH-Qvaq473nkhAF6gD5VaKMMZTHk;" 
 }
 app.use(express.static("public"));
