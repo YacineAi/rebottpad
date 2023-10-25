@@ -294,13 +294,31 @@ botly.on("postback", async (senderId, message, postback) => {
   
         var text = await getStory(read.data.parts[0].id);
   
-        botly.sendText({ 
-          id: senderId,
-          text: text,
-          quick_replies: [
-            botly.createQuickReply("التالي", "desc.data.parts[0]")
-          ],
-        });
+        const parts = [];
+        let currentPart = '';
+  
+        const words = text.split(' ');
+        
+        for (const word of words) {
+          if ((currentPart + ' ' + word).length <= 1600) {
+            currentPart += (currentPart ? ' ' : '') + word;
+          } else {
+            parts.push(currentPart);
+            currentPart = word;
+          }
+        }
+        if (currentPart) {
+          parts.push(currentPart);
+        }
+        for (const part of parts) {
+          botly.sendText({ 
+            id: senderId,
+            text: part,
+            quick_replies: [
+              botly.createQuickReply("التالي", "desc.data.parts[0]")
+            ],
+          });
+        }
       } else if (message.postback.title == "3") {
         //
       } else if (message.postback.title == "4") {
