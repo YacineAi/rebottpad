@@ -152,7 +152,7 @@ botly.on("message", async (senderId, message) => {
                 subtitle: `${x.user.name} 👤 | ${x.readCount} 👁‍🗨 | جزء ${x.numParts}`,
                 buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
                           botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
-                          botly.createPostbackButton('الإعدادات ⚙', "settings")]
+                          botly.createPostbackButton('الإعدادات ⚙', "Settings")]
               }
               list.push(contents);
               });
@@ -169,7 +169,7 @@ botly.on("message", async (senderId, message) => {
                   subtitle: `${x.user.name} 👤 | ${x.readCount} 👁‍🗨 | جزء ${x.numParts}`,
                   buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
                             botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
-                            botly.createPostbackButton('الإعدادات ⚙', "GET_STARTED")]
+                            botly.createPostbackButton('الإعدادات ⚙', "Settings")]
                 }
                 botly.sendGeneric({id: senderId, elements: [contents], aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.SQUARE});
                }
