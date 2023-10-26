@@ -172,7 +172,7 @@ botly.on("message", async (senderId, message) => {
               const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${user[0].pad}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
               
               if (pi <= read.data.numParts) {
-                var text = await getStory(read.data.parts[pi].id);
+                var text = await getStory(read.data.parts[pi - 1].id);
                 
                 const parts = [];
                 let currentPart = '';
@@ -604,35 +604,33 @@ botly.on("postback", async (senderId, message, postback) => {
           botly.createWebURLButton("حساب الصانع 🇩🇿", "facebook.com/0xNoti/")]});
       } else {
         var text = await getStory(read.data.parts[pi].id);
+        const parts = [];
+        let currentPart = '';
+        const words = text.split(' ');
 
-      const parts = [];
-      let currentPart = '';
-
-      const words = text.split(' ');
-      
-      for (const word of words) {
-        if ((currentPart + ' ' + word).length <= 2000) {
-          currentPart += (currentPart ? ' ' : '') + word;
-        } else {
-          parts.push(currentPart);
-          currentPart = word;
+        for (const word of words) {
+          if ((currentPart + ' ' + word).length <= 2000) {
+            currentPart += (currentPart ? ' ' : '') + word;
+          } else {
+            parts.push(currentPart);
+            currentPart = word;
+          }
         }
-      }
-
-      if (currentPart) {
-        parts.push(currentPart);
-      }
-
-      for (const part of parts) {
-        botly.sendText({ 
-          id: senderId,
-          text: part,
-          quick_replies: [
-            botly.createQuickReply("الجزء التالي ◀️", `${prts[0]}-${pi + 1}`)
-          ],
-        });
-        await timer(1500);
-      }
+        
+        if (currentPart) {
+          parts.push(currentPart);
+        }
+        
+        for (const part of parts) {
+          botly.sendText({ 
+            id: senderId,
+            text: part,
+            quick_replies: [
+              botly.createQuickReply("الجزء التالي ◀️", `${prts[0]}-${pi + 1}`)
+            ],
+          });
+          await timer(1500);
+        }
       }
     } else if (message.message.text == "xx") {
       //
