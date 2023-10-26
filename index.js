@@ -238,7 +238,7 @@ botly.on("message", async (senderId, message) => {
             search.data.stories.forEach((x) => {
               const contents = {
                 title: `${x.title}`,
-                image_url: `${x.cover}`,
+                image_url: `https://www.wattpad.com/banner?id=${x.id}`,
                 subtitle: `${x.user.name} 👤 | ${x.readCount} 👁‍🗨 | جزء ${x.numParts}`,
                 buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
                           botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
@@ -246,7 +246,7 @@ botly.on("message", async (senderId, message) => {
               }
               list.push(contents);
               });
-              botly.sendGeneric({id: senderId, elements: list, aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.SQUARE});
+              botly.sendGeneric({id: senderId, elements: list, aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.HORIZONTAL});
   
            } else {
             const search = await axios.get(`https://api.wattpad.com/v4/search/stories?query=${encodeURIComponent(message.message.text)}&mature=1&free=1&paid=1&limit=5&fields=stories(id%2Ctitle%2CvoteCount%2CreadCount%2CnumParts%2Cuser%2Cmature%2Ccompleted%2Crating%2Ccover%2Cpromoted%2CisPaywalled%2CpaidModel)&language=${user[0].lang}`, { headers: headers });
@@ -255,13 +255,13 @@ botly.on("message", async (senderId, message) => {
               setTimeout(function(){
                 const contents = {
                   title: `${x.title}`,
-                  image_url: `${x.cover}`,
+                  image_url: `https://www.wattpad.com/banner?id=${x.id}`,
                   subtitle: `${x.user.name} 👤 | ${x.readCount} 👁‍🗨 | جزء ${x.numParts}`,
                   buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
                             botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
                             botly.createPostbackButton('الإعدادات ⚙', "Settings")]
                 }
-                botly.sendGeneric({id: senderId, elements: [contents], aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.SQUARE});
+                botly.sendGeneric({id: senderId, elements: [contents], aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.HORIZONTAL});
                }
               , i * 1000);
               });
@@ -594,7 +594,7 @@ botly.on("postback", async (senderId, message, postback) => {
       const prts = postback.split("-");
       const pi = parseInt(prts[1]);
       const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${prts[0]}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
-      
+
       if (pi == read.data.numParts) {
         botly.sendButtons({
           id: senderId,
