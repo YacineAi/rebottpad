@@ -595,7 +595,7 @@ botly.on("postback", async (senderId, message, postback) => {
       const pi = parseInt(prts[1]);
       const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${prts[0]}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
       console.log(pi)
-      if (pi > read.data.numParts) {
+      if (pi >= read.data.numParts) {
         botly.sendButtons({
           id: senderId,
           text: "إنتهت كل أجزاء الرواية 😅\nإذا كنت تريد المزيد من الروايات إضغط ترشيحات ⭐️ أو ٱكتب إسم رواية تعرفها 😄\nو فضلاً لا تنسى متابعة حساب الصانع 💜😺",
