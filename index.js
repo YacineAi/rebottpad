@@ -392,25 +392,17 @@ botly.on("postback", async (senderId, message, postback) => {
           parts.push(currentPart);
         }
   
-        botly.sendText({ 
-          id: senderId,
-          text: `الرواية تحتوي على (${read.data.numParts}) أجزاء 📖 إذا اردت الذهاب لجزء معين ⬅️ يرجى كتابة رقم الجزء و سأخذك إليه مباشرة 🎯`,
-          quick_replies: [
-            botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
-          ],
-        }, (err, data) => {
-          for (const part of parts) {
-            setTimeout(() => {
-                botly.sendText({ 
-                  id: senderId,
-                  text: part,
-                  quick_replies: [
-                    botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
-                  ],
-                });
-            }, 1500);
-          }
-        });
+        for (const part of parts) {
+          setTimeout(() => {
+              botly.sendText({ 
+                id: senderId,
+                text: part,
+                quick_replies: [
+                  botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
+                ],
+              });
+          }, 1500);
+        }
       });
     } else if (message.postback.title == "3") {
       //
@@ -571,25 +563,17 @@ botly.on("postback", async (senderId, message, postback) => {
           parts.push(currentPart);
         }
 
-        botly.sendText({ 
-          id: senderId,
-          text: `الرواية تحتوي على (${read.data.numParts}) أجزاء 📖 إذا اردت الذهاب لجزء معين ⬅️ يرجى كتابة رقم الجزء و سأخذك إليه مباشرة 🎯`,
-          quick_replies: [
-            botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
-          ],
-        }, (err, data) => {
-          for (const part of parts) {
-            setTimeout(() => {
-                botly.sendText({ 
-                  id: senderId,
-                  text: part,
-                  quick_replies: [
-                    botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
-                  ],
-                });
-            }, 1500);
-          }
-        });
+        for (const part of parts) {
+          setTimeout(() => {
+              botly.sendText({ 
+                id: senderId,
+                text: part,
+                quick_replies: [
+                  botly.createQuickReply("الجزء التالي ◀️", `${postback}-1`)
+                ],
+              });
+          }, 1500);
+        }
       });
     } else if (message.message.text == "الجزء التالي ◀️") {
       const prts = postback.split("-");
