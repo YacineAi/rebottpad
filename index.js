@@ -343,7 +343,7 @@ botly.on("postback", async (senderId, message, postback) => {
       const getSeggs = await axios.get("https://api.wattpad.com/v5/home", { headers: headers });
       const completedStoriesSection = getSeggs.data.sections.find(section => section.data.heading === "Completed stories");
       if (user[0].os == "messenger") {
-        const listItems = completedStoriesSection.data.listItems.slice(0, 10);
+        const listItems = completedStoriesSection.data.items.slice(0, 10);
 
         const list = [];
         listItems.forEach((x) => {
@@ -360,7 +360,7 @@ botly.on("postback", async (senderId, message, postback) => {
           botly.sendGeneric({id: senderId, elements: list, aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.HORIZONTAL});
 
       } else {
-        const listItems = completedStoriesSection.data.listItems.slice(0, 10);
+        const listItems = completedStoriesSection.data.items.slice(0, 5);
 
         listItems.forEach((x) => {
           const contents = {
