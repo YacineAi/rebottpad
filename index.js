@@ -13,6 +13,7 @@ const botly = new Botly({
 });
 
 const botVer = "1.0";
+const wordPattern = /(xnxx|xvideos|porn|sex|s3x|xxx|xx|xxxlx|xlxx|anal|hot|sexy|erotic|masterbating|rape|kill|suicide|pussy|booty|ass|boobs|fuck|fuk|shit|asshole|dick|bitch|yuri|yaoi|hentai|هنتاي|سكس|ساخن|بورن|فضيحة|جنس|مضاجعة|ممارسة|نيك|نكح|نكاح|مؤلم|عنيف|قحبة|106|نقش|مثلي|تحرش|اغتصاب|إغتصاب|قتل|احمق|غبي|زبه|فرجها|خصية|زبه|عذاب|تعذيب|قاتل|عاهرة|قحبة|ساخن|مثير|ذبح|براز|خرا|الخرا|خراء|أغتصاب|متحرش|زب|قضيب|مؤخرة|ثدي|فرج|كس|كسها|ليزبيان|قوينة|gwina|ahole|anal|analprobe|fuck|fuckass|fucked|fucked|fucker|fucking|fucknut|fucks|fucktard|fuck-tard|fuckup|fuckwad|fuckwit|gspot|g-spot|handjob|horny|jackhole|jackoff|jerk|jerked|jerkoff|lesbians|masterbate|masterbating|masterbation|masturbate|masturbating|masturbation|maxi|menses|menstruate|menstruation|motherfucker|motherfucking|mtherfucker|mthrfucker|tubgirl|vagina|virgin|vomit|whore|whored|whores|x-rated|zoophile)/i;
 
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SB_URL, process.env.SB_KEY, { auth: { persistSession: false} });
@@ -173,7 +174,8 @@ botly.on("message", async (senderId, message) => {
               
               if (pi <= read.data.numParts) {
                 var text = await getStory(read.data.parts[pi - 1].id);
-                
+                text = text.replace(wordPattern, function (match) { return match[0] + '*'.repeat(match.length - 1) + match.slice(-1); });
+
                 const parts = [];
                 let currentPart = '';
                 
@@ -321,8 +323,8 @@ botly.on("postback", async (senderId, message, postback) => {
           return "ماسنجر 💬";
         } else if (term == "lite") {
           return "فيسبوك لايت 🗨️";
-        } else if (term == ".") {
-          return ".";
+        } else if (term == "skipped") {
+          return "لم يتم تحديد 💭";
         }
       };
       
@@ -337,7 +339,42 @@ botly.on("postback", async (senderId, message, postback) => {
         ],
       });
     } else if (postback == "Segg") {
-      botly.sendText({ id: senderId, text: "لم يتم إضافة الميز بعد" });
+      const user = await userDb(senderId);
+      const getSeggs = await axios.get("https://api.wattpad.com/v5/home", { headers: headers });
+      const completedStoriesSection = getSeggs.data.sections.find(section => section.data.heading === "Completed stories");
+      if (user[0].os == "messenger") {
+        const listItems = completedStoriesSection.data.listItems.slice(0, 10);
+
+        const list = [];
+        listItems.forEach((x) => {
+          const contents = {
+            title: `${x.title}`,
+            image_url: `https://www.wattpad.com/banner?id=${x.id}`,
+            subtitle: `جزء ${x.numParts}`,
+            buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
+                      botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
+                      botly.createPostbackButton('الإعدادات ⚙', "Settings")]
+          }
+          list.push(contents);
+          });
+          botly.sendGeneric({id: senderId, elements: list, aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.HORIZONTAL});
+
+      } else {
+        const listItems = completedStoriesSection.data.listItems.slice(0, 10);
+
+        listItems.forEach((x) => {
+          const contents = {
+            title: `${x.title}`,
+            image_url: `https://www.wattpad.com/banner?id=${x.id}`,
+            subtitle: `جزء ${x.numParts}`,
+            buttons: [botly.createPostbackButton('بدأ قراءة الرواية 📖', `${x.id}`),
+                      botly.createPostbackButton('قراءة وصف الرواية ℹ', `${x.id}`),
+                      botly.createPostbackButton('الإعدادات ⚙', "Settings")]
+          }
+          botly.sendGeneric({id: senderId, elements: [contents], aspectRatio: Botly.CONST.IMAGE_ASPECT_RATIO.HORIZONTAL});
+          });
+          
+      }
     } else if (postback == "mature0") {
       //
     } else if (postback == "mature1") {
@@ -374,7 +411,8 @@ botly.on("postback", async (senderId, message, postback) => {
         const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${postback}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
 
         var text = await getStory(read.data.parts[0].id);
-  
+        text = text.replace(wordPattern, function (match) { return match[0] + '*'.repeat(match.length - 1) + match.slice(-1); });
+
         const parts = [];
         let currentPart = '';
   
@@ -430,8 +468,8 @@ botly.on("postback", async (senderId, message, postback) => {
           return "ماسنجر 💬";
         } else if (term == "lite") {
           return "فيسبوك لايت 🗨️";
-        } else if (term == ".") {
-          return ".";
+        } else if (term == "skipped") {
+          return "لم يتم تحديد 💭";
         }
       };
       
@@ -554,7 +592,7 @@ botly.on("postback", async (senderId, message, postback) => {
         const read = await axios.get(`https://www.wattpad.com/api/v3/stories/${postback}?drafts=0&include_deleted=1&fields=id%2Ctitle%2Clength%2CcreateDate%2CmodifyDate%2CvoteCount%2CreadCount%2CcommentCount%2Curl%2Cpromoted%2Csponsor%2Clanguage%2Cuser%2Cdescription%2Ccover%2Chighlight_colour%2Ccompleted%2CisPaywalled%2CpaidModel%2Ccategories%2CnumParts%2CreadingPosition%2Cdeleted%2CdateAdded%2ClastPublishedPart%28createDate%29%2Ctags%2Ccopyright%2Crating%2Cstory_text_url%28text%29%2C%2Cparts%28id%2Ctitle%2CvoteCount%2CcommentCount%2CvideoId%2CreadCount%2CphotoUrl%2CmodifyDate%2CcreateDate%2Clength%2Cvoted%2Cdeleted%2Ctext_url%28text%29%2Cdedication%2Curl%2CwordCount%29%2CisAdExempt%2CtagRankings`, { headers : headers2});
 
         var text = await getStory(read.data.parts[0].id);
-        
+        text = text.replace(wordPattern, function (match) { return match[0] + '*'.repeat(match.length - 1) + match.slice(-1); });
         const parts = [];
         let currentPart = '';
         const words = text.split(' ');
@@ -604,6 +642,8 @@ botly.on("postback", async (senderId, message, postback) => {
           botly.createWebURLButton("حساب الصانع 🇩🇿", "facebook.com/0xNoti/")]});
       } else {
         var text = await getStory(read.data.parts[pi].id);
+        text = text.replace(wordPattern, function (match) { return match[0] + '*'.repeat(match.length - 1) + match.slice(-1); });
+
         const parts = [];
         let currentPart = '';
         const words = text.split(' ');
