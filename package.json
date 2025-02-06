@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.38.2",
-    "axios": "^1.5.1",
+    "@supabase/supabase-js": "^2.48.1",
+    "axios": "^1.7.9",
     "botly": "^1.6.2",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "express": "^4.21.2"
   }
 }
